@@ -4,6 +4,7 @@ fun main() {
     val input = readln().toMutableList()
     var winX = false
     var winO = false
+    var impossible = false
     var countX = 0
     var countO = 0
     var countU = 0
@@ -23,7 +24,7 @@ fun main() {
     }
     print("|\n")
     println("---------")
-    if (countO - countX !in -1..1) println("Impossible")
+
 
 
     if (input.subList(0, 3).joinToString("") == "XXX") winX = true
@@ -44,8 +45,14 @@ fun main() {
     if (input[0].toString() + input[4] + input[8] == "OOO") winO = true
     if (input[2].toString() + input[4] + input[6] == "OOO") winO = true
 
+    if (countO - countX !in -1..1 || winX && winO) {
+        impossible = true
+        println("Impossible")
+    }
     if (winX && !winO) println("X wins")
     if (!winX && winO) println("O wins")
+    if (!winX && !winO && countU == 0) println("Draw")
+    if (!winX && !winO && !impossible && countU > 0) println("Game not finished")
 
 
 
@@ -56,10 +63,10 @@ fun main() {
 
 /*
 1. Create "Game not finished" condition
-    a. Not impossible
-    b. When neither winX nor winO == true AND board NOT filled
+    a. Not impossible -- DONE (2)
+    b. When neither winX nor winO == true AND board NOT filled -- DONE (2)
 2. Create Draw condition
-    a. When neither winX nor winO == true AND board is filled
+    a. When neither winX nor winO == true AND board is filled -- DONE (2)
 3. Create X Wins Condition
     a. X count >= 3
     b. winX == true && winO == false -- DONE (2)
@@ -69,6 +76,6 @@ fun main() {
     b. winO == true && winX == false -- DONE (2)
     c. "OOO" is true (including diagonals) -- DONE(2)
 5. Create impossible condition
-    a. countX - countO is not between -1 and 1 -- DONE (2)
-    b. winX and winO == true
+    a. countX - countO is not between -1 and 1 -- DONE (1)
+    b. winX and winO == true -- DONE (2)
  */
