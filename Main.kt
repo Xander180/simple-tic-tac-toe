@@ -1,7 +1,7 @@
 package tictactoe
 
 fun main() {
-    val input = readln().toMutableList()
+    val input = readln().toList()
     var winX = false
     var winO = false
     var impossible = false
@@ -10,7 +10,7 @@ fun main() {
     var countU = 0
     println("---------")
     print("| ")
-    for (i in 0 until input.size) {
+    for (i in input.indices) {
         if (i == 3 || i == 6) {
             print("|")
             print("\n")
@@ -27,14 +27,14 @@ fun main() {
 
 
 
-    if (input.subList(0, 3).joinToString("") == "XXX") winX = true
-    if (input.subList(3, 6).joinToString("") == "XXX") winX = true
-    if (input.subList(6, 9).joinToString("") == "XXX") winX = true
-    if (input[0].toString() + input[3] + input[6] == "XXX") winX = true
-    if (input[1].toString() + input[4] + input[7] == "XXX") winX = true
-    if (input[2].toString() + input[5] + input[8] == "XXX") winX = true
-    if (input[0].toString() + input[4] + input[8] == "XXX") winX = true
-    if (input[2].toString() + input[4] + input[6] == "XXX") winX = true
+    if (input.subList(0, 3).joinToString("") == "XXX") winX = true // Top row
+    if (input.subList(3, 6).joinToString("") == "XXX") winX = true // Middle row
+    if (input.subList(6, 9).joinToString("") == "XXX") winX = true // Bottom row
+    if (input[0].toString() + input[3] + input[6] == "XXX") winX = true // First column
+    if (input[1].toString() + input[4] + input[7] == "XXX") winX = true // Second column
+    if (input[2].toString() + input[5] + input[8] == "XXX") winX = true // Third column
+    if (input[0].toString() + input[4] + input[8] == "XXX") winX = true // Diagonal
+    if (input[2].toString() + input[4] + input[6] == "XXX") winX = true // Diagonal
 
     if (input.subList(0, 3).joinToString("") == "OOO") winO = true
     if (input.subList(3, 6).joinToString("") == "OOO") winO = true
@@ -48,34 +48,11 @@ fun main() {
     if (countO - countX !in -1..1 || winX && winO) {
         impossible = true
         println("Impossible")
-    }
+    } // Neither X nor O can have too many turns and both cannot win
     if (winX && !winO) println("X wins")
     if (!winX && winO) println("O wins")
     if (!winX && !winO && countU == 0) println("Draw")
     if (!winX && !winO && !impossible && countU > 0) println("Game not finished")
 
 
-
-
-
-
 }
-
-/*
-1. Create "Game not finished" condition
-    a. Not impossible -- DONE (2)
-    b. When neither winX nor winO == true AND board NOT filled -- DONE (2)
-2. Create Draw condition
-    a. When neither winX nor winO == true AND board is filled -- DONE (2)
-3. Create X Wins Condition
-    a. X count >= 3
-    b. winX == true && winO == false -- DONE (2)
-    c. "XXX" is true (including diagonals) -- DONE(1)
-4. Create O wins condition
-    a. O count >= 3
-    b. winO == true && winX == false -- DONE (2)
-    c. "OOO" is true (including diagonals) -- DONE(2)
-5. Create impossible condition
-    a. countX - countO is not between -1 and 1 -- DONE (1)
-    b. winX and winO == true -- DONE (2)
- */
