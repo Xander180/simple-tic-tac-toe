@@ -1,5 +1,6 @@
 package tictactoe
-import java.lang.Double.parseDouble
+var PLAYER_TURN = 1
+var COUNT_U = 0
 fun displayBoard(input: List<MutableList<Char>>) {
     var countX = 0
     var countO = 0
@@ -12,37 +13,53 @@ fun displayBoard(input: List<MutableList<Char>>) {
     for (i in input.indices) {
         if (input[i][0].toString() == "X") ++countX
         if (input[i][0].toString() == "O") ++countO
-        if (input[i][0].toString() == "_") ++countU
+        if (input[i][0].toString() == "_") ++COUNT_U
         if (input[i][1].toString() == "X") ++countX
         if (input[i][1].toString() == "O") ++countO
-        if (input[i][1].toString() == "_") ++countU
+        if (input[i][1].toString() == "_") ++COUNT_U
         if (input[i][2].toString() == "X") ++countX
         if (input[i][2].toString() == "O") ++countO
-        if (input[i][2].toString() == "_") ++countU
+        if (input[i][2].toString() == "_") ++COUNT_U
     }
     gameplay(input)
 }
 fun gameplay(input: List<MutableList<Char>>) {
-    var turns = 1
+    while (PLAYER_TURN < 10 || COUNT_U > 0) {
+        val location = readln()
+        val locationAsList = location.replace(" ", "").toList()
 
-    while (true) {
-        var location = readln()
 
-        try {
-            val num = parseDouble(location)
-        } catch (e: NumberFormatException) {
+        if (location.split(" ")[0].toDoubleOrNull() == null || location.split(" ")[1].toDoubleOrNull() == null) {
             println("You should enter numbers!")
             continue
         }
-        val locationAsList = location.toList()
-        val coord1 = locationAsList[0].code
-        val coord2 = locationAsList[1].code
-        if (input[coord1 - 1][coord2 - 1] == 'X' || input[coord1 - 1][coord2 - 1] == 'O') {
+
+        if (locationAsList[0].digitToInt() !in 1..3 || locationAsList[1].digitToInt() !in 1..3) {
+            println("Coordinates should be from 1 to 3!")
+            continue
+        }
+
+        if (input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] == 'X'
+            || input[locationAsList[1].digitToInt() - 1][locationAsList[1].digitToInt() - 1] == 'O') {
             println("This cell is occupied! Choose another one!")
             continue
         }
 
-    }
+        when (PLAYER_TURN) {
+            1 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'X'
+            3 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'X'
+            5 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'X'
+            7 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'X'
+            9 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'X'
+            2 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'O'
+            4 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'O'
+            6 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'O'
+            8 -> input[locationAsList[0].digitToInt() - 1][locationAsList[1].digitToInt() - 1] = 'O'
+        }
+        PLAYER_TURN += 1
+        COUNT_U = 0
+        displayBoard(input)
+        }
 }
 fun winConditions(input: List<Char>, countX: Int, countO: Int, countU: Int) {
     var winX = false
@@ -87,3 +104,20 @@ fun main() {
 
 
 }
+
+/*
+1. Move existing code into separate functions -- DONE
+    a. Request user input in main() to create board -- DONE
+    b. Call function that displays board -- DONE
+
+2. Create function for playing
+    a. Prompt user to make a move (2 coordinate numbers) -- DONE
+        I. Turn into list -- DONE
+    b. Create a counter to limit number of moves to 9(?) (X goes first)
+    c. Based on coordinates, edit table to reflect where X or O is placed
+        I. Print "This cell is occupied! Choose another one!" if the cell is not empty. -- DONE
+        II. Print "You should enter numbers!" if the user enters non-numeric symbols in the coordinates input. -- DONE
+        III. Print "Coordinates should be from 1 to 3!" if the user enters coordinates outside the game grid. -- DONE
+        IV. Keep prompting user if input is invalid -- DONE
+        V. If input is correct, display changed board -- DONE
+ */
